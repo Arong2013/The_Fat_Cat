@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b6dbe00cf0ee2f4094f075c83f0992b, type: 3}
+  m_Name: Fire_Axe
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 21300000, guid: ed7b42d3ef2157a41838269516ea1647, type: 3}
+    - {fileID: 4300000, guid: 41e75d700cdfda04cb90ea04e9861441, type: 3}
+    - {fileID: 2100000, guid: 4cee7a5983b187943adc589b9cb1f084, type: 2}
+    - {fileID: 11400000}
+    - {fileID: 1319978954992906, guid: eec782c803214f9439062d626e9415e7, type: 3}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: ID
+      Entry: 3
+      Data: 12
+    - Name: Name
+      Entry: 1
+      Data: FireAxe
+    - Name: Tooltip
+      Entry: 1
+      Data: "\uC548\uB155\uD558\uC138\uC694"
+    - Name: IconSprite
+      Entry: 10
+      Data: 0
+    - Name: mesh
+      Entry: 10
+      Data: 1
+    - Name: material
+      Entry: 10
+      Data: 2
+    - Name: item
+      Entry: 7
+      Data: 0|EquipmentItem, Assembly-CSharp
+    - Name: Data
+      Entry: 10
+      Data: 3
+    - Name: EquipmentData
+      Entry: 7
+      Data: 1|MeleeWeaponData, Assembly-CSharp
+    - Name: weaponPrefab
+      Entry: 10
+      Data: 4
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: Durability
+      Entry: 3
+      Data: 100
+    - Name: 
+      Entry: 8
+      Data: 
