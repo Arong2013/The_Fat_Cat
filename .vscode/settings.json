@@ -52,5 +52,5 @@
         "Temp/": true
     },
     "dotnet.preferCSharpExtension": true,
-    "dotnet.defaultSolution": "ProjectS.sln"
+    "dotnet.defaultSolution": "The_Fat_Cat.sln"
 }
