@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
+using UnityEngine;
 
 public interface ITurnAction
 {
@@ -8,9 +8,9 @@ public interface ITurnAction
 }
 public class MoveToPositionAction : ITurnAction
 {
-    private IMovable movable;   
+    private IEntity movable;   
     private Vector3 targetPosition;
-    public MoveToPositionAction(IMovable movable, Vector3 targetPosition)
+    public MoveToPositionAction(IEntity movable, Vector3 targetPosition)
     {
         this.movable = movable;
         this.targetPosition = targetPosition;
@@ -18,7 +18,6 @@ public class MoveToPositionAction : ITurnAction
     public TurnState Execute()
     {
         Vector3 direction = Vector3.Normalize(targetPosition - movable.Position);
-
         if (Vector3.Distance(movable.Position, targetPosition) <= 0.1f)
         {
             movable.Position = targetPosition;

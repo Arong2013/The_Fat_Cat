@@ -1,21 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
-public class Player : IMovable, ITurnStateable
+using UnityEngine;
+public class Player : IEntity, ITurnStateable
 {
-    public Vector3 Position {get; set;}
-    public float Radius {get; set;}
+    public Transform transform { get; set; }
+    public float Radius { get; set; }
+    public Vector3 Position
+    {
+        get => transform.position;
+        set
+        {
+            Vector3 direction = value - transform.position;
+            if (direction != Vector3.zero)
+                transform.rotation = Quaternion.LookRotation(direction);
+            transform.position = value;
+        }
+    }
+    public bool IsObstacle { get; set;}
+
     public ITurnAction turnAction;
 
-
-
-    public Player(Vector3 startPosition, float radius)
+    public Player(float radius, Transform _transform)
     {
-        Position = startPosition;
         Radius = radius;
+        transform = _transform;
+        IsObstacle = true;
     }
-    public TurnState ExecuteTurn()
-    {
-        return turnAction.Execute();
-    }
+    public TurnState ExecuteTurn() => turnAction.Execute();
 }
