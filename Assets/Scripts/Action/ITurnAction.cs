@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public interface ITurnAction
 {
     TurnState Execute();
@@ -17,6 +18,7 @@ public class BassMoveAction : ITurnAction
     }
     public TurnState Execute()
     {
+        movable.Position = targetPosition;
         // 목표 위치에 매우 근접한 경우
         if (Vector3.Distance(movable.transform.position, targetPosition) <= 0.1f)
         {

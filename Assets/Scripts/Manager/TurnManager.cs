@@ -42,13 +42,17 @@ public class TurnManager : MonoBehaviour
             {
                 yield return null;  // 엔티티가 등록될 때까지 프레임마다 대기
             }
-            
-            foreach (var entity in turnEntities)
+            while (turnEntities.Exists(x => x.CurrentTurnState != TurnState.SUCCESS))
             {
-                if (entity.CurrentTurnState == TurnState.SUCCESS)
-                    continue;  // 이미 성공한 턴은 건너뜀
-                entity.ExecuteTurn();  // 턴 실행
+                foreach (var entity in turnEntities)
+                {
+                    if (entity.CurrentTurnState == TurnState.SUCCESS)
+                        continue;  // 이미 성공한 턴은 건너뜀
+                    entity.ExecuteTurn();  // 턴 실행
+                }
+                yield return null;
             }
+            turnEntities.ForEach(entity => entity.CurrentTurnState = TurnState.FAILURE);
             // 다음 프레임까지 대기, 계속해서 실행됨
             yield return null;
         }
