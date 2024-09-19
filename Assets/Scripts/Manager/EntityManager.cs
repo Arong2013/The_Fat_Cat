@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IEntity
+public interface IEntity 
 {
+    public Transform transform{get;set;}
     public Vector3 Position { get; set; }
     public float Radius { get; set; } // 객체의 반지름 (크기)
     public bool IsObstacle{get;set;}
