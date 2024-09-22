@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -15,7 +16,7 @@ public class TouchableMovementHandler : ITouchableAction
     public Dictionary<Type, Action<PointerEventData>> touchActions { get; set; }
     private IEntity ientity;
     Action<ITurnAction> setTurnAction;
-    public TouchableMovementHandler(IEntity entity,Action<ITurnAction>  _turnAction)
+    public TouchableMovementHandler(IEntity entity, Action<ITurnAction> _turnAction)
     {
         ientity = entity;
         setTurnAction = _turnAction;
@@ -30,7 +31,7 @@ public class TouchableMovementHandler : ITouchableAction
     {
         Vector2 touchPosition = eventData.position;
         Vector3 moveDirection = GetMoveDirection(touchPosition);
-        setTurnAction(new BassMoveAction(ientity,ientity.Position + moveDirection));
+        setTurnAction(new TargetMoveAction(ientity, ientity.Position + moveDirection));
         Debug.Log($"Moving in direction: {moveDirection}");
     }
     Vector3 GetMoveDirection(Vector2 touchPosition)
@@ -38,23 +39,27 @@ public class TouchableMovementHandler : ITouchableAction
         float screenWidth = Screen.width;
         float screenHeight = Screen.height;
 
-        if (touchPosition.x < screenWidth / 2 && touchPosition.y > screenHeight / 2)
+        // 화면 상단 또는 하단을 터치했을 때
+        if (touchPosition.y > screenHeight * 0.65f)  // 상단 25% 부분
         {
-            return Vector3.forward;  // 위로 이동
+            return new Vector3(1, 0, 1);  // 위로 대각선 이동
         }
-        else if (touchPosition.x < screenWidth / 2 && touchPosition.y < screenHeight / 2)
+        else if (touchPosition.y < screenHeight * 0.35f)  // 하단 25% 부분
         {
-            return Vector3.left;  // 왼쪽으로 이동
+            return new Vector3(-1, 0, -1);  // 아래로 대각선 이동
         }
-        else if (touchPosition.x > screenWidth / 2 && touchPosition.y > screenHeight / 2)
+        // 중앙을 기준으로 좌우를 나눔
+        else if (touchPosition.x < screenWidth / 2)  // 중앙 왼쪽
         {
-            return Vector3.right;  // 오른쪽으로 이동
+            return new Vector3(-1, 0, 1);  // 왼쪽으로 이동
         }
-        else if (touchPosition.x > screenWidth / 2 && touchPosition.y < screenHeight / 2)
+        else  // 중앙 오른쪽
         {
-            return Vector3.back;  // 아래로 이동
+            return new Vector3(1, 0, -1);  // 오른쪽으로 이동
         }
-
-        return Vector3.zero;  // 터치가 감지되지 않은 경우
     }
+
+
+
+
 }

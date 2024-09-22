@@ -8,7 +8,6 @@ public enum TurnState
     RUNNING,    // 턴이 진행 중임
     FAILURE     // 턴이 실패함
 }
-
 // 각 턴을 담당하는 엔티티가 반드시 구현해야 하는 메서드 정의
 public interface ITurnStateable
 {
@@ -48,7 +47,8 @@ public class TurnManager : MonoBehaviour
                 {
                     if (entity.CurrentTurnState == TurnState.SUCCESS)
                         continue;  // 이미 성공한 턴은 건너뜀
-                    entity.ExecuteTurn();  // 턴 실행
+                    while (entity.ExecuteTurn() == TurnState.FAILURE)
+                        yield return null;
                 }
                 yield return null;
             }

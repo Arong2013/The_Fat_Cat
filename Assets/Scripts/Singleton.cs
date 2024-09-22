@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public abstract class Singleton<T> : SerializedMonoBehaviour where T : Component
+public abstract class Singleton<T> : MonoBehaviour where T : Component
 {
     private static T instance;
 

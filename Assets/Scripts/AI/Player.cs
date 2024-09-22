@@ -22,19 +22,19 @@ public class Player : IEntity, ITurnStateable
         Position = _transform.position;
         CurrentTurnState = TurnState.FAILURE;
 
-        Utils.GetUI<TouchInputHandler>().SetTouchAction(new TouchableMovementHandler(this,SetTurnAction));
+        
+        Utils.GetUI<TouchInputHandler>().SetTouchAction(new TouchableMovementHandler(this, SetTurnAction));
     }
 
-    public void SetTurnAction(ITurnAction _turnAction){turnAction = _turnAction;}
+    public void SetTurnAction(ITurnAction _turnAction) { turnAction = _turnAction; }
 
     public TurnState ExecuteTurn()
     {
         if (turnAction == null)
-        {
-            Debug.Log("아아");
             return TurnState.FAILURE;
-        } 
         CurrentTurnState = turnAction.Execute();
+        if (CurrentTurnState == TurnState.SUCCESS)
+            turnAction = null;
         return CurrentTurnState;
     }
 }

@@ -1,63 +1,32 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public interface IEntity 
+public interface IEntity
 {
-    public Transform transform{get;set;}
+    public Transform transform { get; set; }
     public Vector3 Position { get; set; }
-    public float Radius { get; set; } // 객체의 반지름 (크기)
-    public bool IsObstacle{get;set;}
+    public float Radius { get; set; }
+    public bool IsObstacle { get; set; }
 }
 
-// 엔티티들을 관리하는 매니저 클래스
-public class EntityManager
+public class EntityManager : MonoBehaviour
 {
-    private List<IEntity> entities; // IEntity 객체들을 관리하는 리스트
+    private List<IEntity> entities = new List<IEntity>();
 
-    public EntityManager()
-    {
-        entities = new List<IEntity>();
-    }
+    public void RegisterEntity(IEntity entity) => entities.Add(entity);
 
-    public void RegisterEntity(IEntity entity)
-    {
-        if (!entities.Contains(entity))
-        {
-            entities.Add(entity);
-        }
-    }
+    public void UnregisterEntity(IEntity entity) => entities.Remove(entity);
 
-    // IEntity 객체를 제거하는 메서드
-    public void UnregisterEntity(IEntity entity)
-    {
-        if (entities.Contains(entity))
-        {
-            entities.Remove(entity);
-        }
-    }
+    // 두 객체가 충돌하는지 여부 계산
+    bool AreEntitiesColliding(IEntity entity1, IEntity entity2) =>
+        entity1.IsObstacle && entity2.IsObstacle && Vector3.Distance(entity1.Position, entity2.Position) <= (entity1.Radius + entity2.Radius);
 
-    // 두 객체가 충돌하는지 여부를 계산하는 메서드
-    bool AreEntitiesColliding(IEntity entity1, IEntity entity2)
-    {
-        float distance = Vector3.Distance(entity1.Position, entity2.Position);
-        float combinedRadius = entity1.Radius + entity2.Radius;
-        return distance <= combinedRadius;
-    }
+    // 특정 IEntity가 다른 객체와 충돌하는지 확인
+    public bool IsEntityColliding(IEntity entity) =>
+        entity.IsObstacle && entities.Any(e => e != entity && AreEntitiesColliding(entity, e));
 
     // 모든 등록된 객체들 간의 충돌을 확인하는 메서드
-    public bool CheckCollisions()
-    {
-        for (int i = 0; i < entities.Count; i++)
-        {
-            for (int j = i + 1; j < entities.Count; j++)
-            {
-                if (AreEntitiesColliding(entities[i], entities[j]))
-                {
-                    return true; // 충돌 발생
-                }
-            }
-        }
-        return false; // 충돌 없음
-    }
+    public bool CheckCollisions() =>
+        entities.SelectMany((entity1, i) => entities.Skip(i + 1), AreEntitiesColliding).Any(collision => collision);
 }
