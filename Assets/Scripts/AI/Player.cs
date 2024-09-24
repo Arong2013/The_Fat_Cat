@@ -33,6 +33,7 @@ public class Player : IEntity, ITurnStateable
         if (turnAction == null)
             return TurnState.FAILURE;
         CurrentTurnState = turnAction.Execute();
+        
         if (CurrentTurnState == TurnState.SUCCESS)
             turnAction = null;
         return CurrentTurnState;
