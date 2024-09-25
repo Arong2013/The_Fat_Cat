@@ -33,26 +33,20 @@ public class EntityManager : MonoBehaviour
 
         return collisionProcessor(collidingEntities);  // 처리 함수에 리스트 전달
     }
-
-    // 충돌 여부 확인
     public bool IsEntityColliding(IEntity entity)
     {
         return GetCollisions(entity, collidingEntities => collidingEntities.Any());
     }
-
     // 첫 번째로 충돌하는 객체 반환
     public IEntity GetFirstCollidingEntity(IEntity entity)
     {
         return GetCollisions(entity, collidingEntities => collidingEntities.FirstOrDefault());
     }
-
     // 충돌하는 모든 객체 리스트로 반환
     public List<IEntity> GetCollidingEntities(IEntity entity)
     {
         return GetCollisions(entity, collidingEntities => collidingEntities);
     }
-
-
     // 모든 등록된 객체들 간의 충돌을 확인하는 메서드
     public bool CheckCollisions() =>
         entities.SelectMany((entity1, i) => entities.Skip(i + 1), AreEntitiesColliding).Any(collision => collision);

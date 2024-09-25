@@ -10,6 +10,8 @@ public class GameManager : Singleton<GameManager>
     public TurnManager turnManager { get; private set; }
     public EntityManager entityManager { get; private set; }
 
+    public CameraManager cameraManager{ get; private set; }
+
 
     protected override void Awake()
     {
@@ -17,6 +19,7 @@ public class GameManager : Singleton<GameManager>
 
         turnManager = transform.GetComponent<TurnManager>();
         entityManager = transform.GetComponent<EntityManager>();
+        cameraManager = transform.GetComponent<CameraManager>();
 
         GameObject obj = Instantiate(playerOBJ, new Vector3(0, 0, 0), quaternion.identity);
         player = new Player(0.5f, obj.transform);
@@ -30,6 +33,7 @@ public class GameManager : Singleton<GameManager>
 
 
         turnManager.Init();
+        cameraManager.Init(obj.transform);
     }
     private void Start()
     {

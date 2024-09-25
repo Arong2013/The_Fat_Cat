@@ -12,7 +12,13 @@ public abstract class MoveActionBase : ITurnAction
     protected IEntity entity;
     protected Vector3 targetPosition;
 
-    public MoveActionBase(IEntity entity) => this.entity = entity;
+    Animator animator;
+
+    public MoveActionBase(IEntity entity)
+    {
+        this.entity = entity;
+        animator = entity.transform.GetComponent<Animator>();
+    }
 
     // 공통된 이동 로직
     protected TurnState MoveToTarget()
@@ -22,38 +28,12 @@ public abstract class MoveActionBase : ITurnAction
         if (Vector3.Distance(entity.transform.position, targetPosition) <= 0.1f)
         {
             entity.transform.position = targetPosition;
+            animator.CrossFade("Idle_A", 0.2f);
             return TurnState.SUCCESS;
         }
-        // 카메라 45도 기준으로 고정된 회전값 설정
-        Vector3 moveDirection = (targetPosition - entity.transform.position).normalized;
-
-        // 카메라의 방향에 맞는 회전 방향 계산 (카메라 기준으로 좌우 이동)
-        Quaternion targetRotation;
-
-        // X축과 Z축 중 어느 축으로 이동했는지 판단
-        if (Mathf.Abs(moveDirection.x) > Mathf.Abs(moveDirection.z))
-        {
-            // 좌우 회전 처리
-            if (moveDirection.x > 0)
-                targetRotation = Quaternion.Euler(0, 45, 0);  // 오른쪽으로 이동 (카메라 기준으로 오른쪽)
-            else
-                targetRotation = Quaternion.Euler(0, 225, 0); // 왼쪽으로 이동 (카메라 기준으로 왼쪽)
-        }
-        else
-        {
-            // 상하 회전 처리
-            if (moveDirection.z > 0)
-                targetRotation = Quaternion.Euler(0, 315, 0); // 위쪽으로 이동 (카메라 기준으로 위쪽)
-            else
-                targetRotation = Quaternion.Euler(0, 135, 0); // 아래쪽으로 이동 (카메라 기준으로 아래쪽)
-        }
-
-        // 회전 적용
-        entity.transform.rotation = Quaternion.Slerp(entity.transform.rotation, targetRotation, 5f * Time.deltaTime);
-
-        entity.transform.rotation = Quaternion.Slerp(entity.transform.rotation, targetRotation, 10f * Time.deltaTime);
-
-        // 이동 처리 (대각선 이동 가능)
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
+            animator.Play("Walk");
+        entity.transform.rotation = Quaternion.LookRotation((targetPosition - entity.transform.position).normalized);
         entity.transform.position = Vector3.MoveTowards(entity.transform.position, targetPosition, 5f * Time.deltaTime);
         return TurnState.RUNNING;
     }
