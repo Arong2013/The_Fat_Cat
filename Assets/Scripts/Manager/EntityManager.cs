@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public interface IEntity
+public abstract class IEntity
 {
-    public Transform transform { get; set; }
+    public Transform transform { get; protected set; }
     public Vector3 Position { get; set; }
-    public float Radius { get; set; }
-    public bool IsObstacle { get; set; }
+    public float Radius { get; protected set; }
+    public bool IsObstacle { get; protected set; }
 }
 
+public interface ICombatable
+{
+    Animator animator { get; set; }
+    public void TakeDamage(ICombatable target);
+}
 public class EntityManager : MonoBehaviour
 {
     private List<IEntity> entities = new List<IEntity>();
@@ -25,7 +30,7 @@ public class EntityManager : MonoBehaviour
 
     // 특정 IEntity가 다른 객체와 충돌하는지 확인
     // 하나의 제너릭 메서드로 통합
-    public T GetCollisions<T>(IEntity entity, Func<List<IEntity>, T> collisionProcessor)
+    T GetCollisions<T>(IEntity entity, Func<List<IEntity>, T> collisionProcessor)
     {
         var collidingEntities = entities
             .Where(e => e != entity && AreEntitiesColliding(entity, e))  // 자신을 제외하고 충돌하는 엔티티 선택
@@ -50,4 +55,18 @@ public class EntityManager : MonoBehaviour
     // 모든 등록된 객체들 간의 충돌을 확인하는 메서드
     public bool CheckCollisions() =>
         entities.SelectMany((entity1, i) => entities.Skip(i + 1), AreEntitiesColliding).Any(collision => collision);
+    public T GetInterfaceOfType<T>(IEntity entity) where T : class
+    {
+        var target = GetFirstCollidingEntity(entity);
+        if (target != null)
+        {
+            if (target is T tClass)
+            {
+                return tClass;
+            }
+        }
+
+        return null;  // 없으면 null 반환
+    }
+
 }

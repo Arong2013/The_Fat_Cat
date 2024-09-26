@@ -3,16 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Player : IEntity, ITurnStateable
+public class Player : IEntity,ICombatable, ITurnStateable
 {
-    public Transform transform { get; set; }
-    public Vector3 Position { get; set; }
     public TurnState CurrentTurnState { get; set; }
-    public ITurnAction turnAction;
-
-
-    public float Radius { get; set; }
-    public bool IsObstacle { get; set; }
+    public ITurnAction turnAction; public Animator animator { get; set; }
 
     public Player(float radius, Transform _transform)
     {
@@ -21,8 +15,8 @@ public class Player : IEntity, ITurnStateable
         IsObstacle = true;
         Position = _transform.position;
         CurrentTurnState = TurnState.FAILURE;
+        animator = transform.GetComponent<Animator>();
 
-        
         Utils.GetUI<TouchInputHandler>().SetTouchAction(new TouchableMovementHandler(this, SetTurnAction));
     }
 
@@ -33,9 +27,14 @@ public class Player : IEntity, ITurnStateable
         if (turnAction == null)
             return TurnState.FAILURE;
         CurrentTurnState = turnAction.Execute();
-        
+
         if (CurrentTurnState == TurnState.SUCCESS)
             turnAction = null;
         return CurrentTurnState;
+    }
+
+    public void TakeDamage(ICombatable target)
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -42,20 +42,20 @@ public class TouchableMovementHandler : ITouchableAction
         // 화면 상단 또는 하단을 터치했을 때
         if (touchPosition.y > screenHeight * 0.65f)  // 상단 25% 부분
         {
-            return new Vector3(1, 0, 1);  // 위로 대각선 이동
+            return new Vector3(0, 0, 1);  // 위로 대각선 이동
         }
         else if (touchPosition.y < screenHeight * 0.35f)  // 하단 25% 부분
         {
-            return new Vector3(-1, 0, -1);  // 아래로 대각선 이동
+            return new Vector3(0, 0, -1);  // 아래로 대각선 이동
         }
         // 중앙을 기준으로 좌우를 나눔
         else if (touchPosition.x < screenWidth / 2)  // 중앙 왼쪽
         {
-            return new Vector3(-1, 0, 1);  // 왼쪽으로 이동
+            return new Vector3(-1, 0, 0);  // 왼쪽으로 이동
         }
         else  // 중앙 오른쪽
         {
-            return new Vector3(1, 0, -1);  // 오른쪽으로 이동
+            return new Vector3(1, 0, 0);  // 오른쪽으로 이동
         }
     }
 

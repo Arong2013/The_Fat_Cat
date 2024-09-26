@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class Enemy : IEntity, ITurnStateable
 {
-    public Transform transform { get; set; }
-    public Vector3 Position { get; set; }
     public TurnState CurrentTurnState { get; set; }
     public ITurnAction turnAction;
-    public float Radius { get; set; }
-    public bool IsObstacle { get; set; }
     public Enemy(float radius, Transform _transform)
     {
         Radius = radius;
