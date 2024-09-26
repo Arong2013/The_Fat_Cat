@@ -6,7 +6,8 @@ using UnityEngine;
 public class Player : IEntity,ICombatable, ITurnStateable
 {
     public TurnState CurrentTurnState { get; set; }
-    public ITurnAction turnAction; public Animator animator { get; set; }
+    public ITurnAction turnAction; 
+    public Animator animator { get; set; }
 
     public Player(float radius, Transform _transform)
     {

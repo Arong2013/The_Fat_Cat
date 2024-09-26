@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : IEntity, ITurnStateable
+public class Enemy : IEntity, ITurnStateable, ICombatable
 {
     public TurnState CurrentTurnState { get; set; }
+    public Animator animator { get; set; }
+
     public ITurnAction turnAction;
     public Enemy(float radius, Transform _transform)
     {
@@ -12,6 +14,7 @@ public class Enemy : IEntity, ITurnStateable
         transform = _transform;
         IsObstacle = true;
         Position = _transform.position;
+        animator = transform.GetComponent<Animator>();
         CurrentTurnState = TurnState.FAILURE;
 
         turnAction = new RandomMoveAction(this);
@@ -25,5 +28,10 @@ public class Enemy : IEntity, ITurnStateable
         }
         CurrentTurnState = turnAction.Execute();
         return CurrentTurnState;
+    }
+
+    public void TakeDamage(ICombatable target)
+    {
+        throw new System.NotImplementedException();
     }
 }
