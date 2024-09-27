@@ -31,6 +31,8 @@ public class TouchableMovementHandler : ITouchableAction
     {
         Vector2 touchPosition = eventData.position;
         Vector3 moveDirection = GetMoveDirection(touchPosition);
+        var entityPos = ientity.Position;
+        ientity.Position = ientity.Position + moveDirection;
         setTurnAction(new TargetMoveAction(ientity, ientity.Position + moveDirection));
         Debug.Log($"Moving in direction: {moveDirection}");
     }

@@ -5,7 +5,6 @@ using UnityEngine;
 public class BassAttackAction : ITurnAction
 {
     ICombatable my, target;
-
     public BassAttackAction(ICombatable _combatable1, ICombatable _combatable2)
     {
         my = _combatable1;
@@ -18,8 +17,7 @@ public class BassAttackAction : ITurnAction
 
         if (my.animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
             return TurnState.RUNNING;
-
-            
+                       
         return TurnState.SUCCESS;
     }
 }
