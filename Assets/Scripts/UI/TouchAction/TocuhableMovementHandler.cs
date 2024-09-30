@@ -33,8 +33,16 @@ public class TouchableMovementHandler : ITouchableAction
         Vector3 moveDirection = GetMoveDirection(touchPosition);
         var entityPos = ientity.Position;
         ientity.Position = ientity.Position + moveDirection;
-        setTurnAction(new TargetMoveAction(ientity, ientity.Position + moveDirection));
-        Debug.Log($"Moving in direction: {moveDirection}");
+        var TG = GameManager.Instance.entityManager.GetFirstCollidingEntity(ientity);
+        if (TG != null && ientity.ObstacleEvent(TG))
+        {
+            ientity.Position = entityPos;
+        }
+        else
+        {
+            setTurnAction(new TargetMoveAction(ientity, ientity.Position + moveDirection));
+            Debug.Log($"Moving in direction: {moveDirection}");
+        }
     }
     Vector3 GetMoveDirection(Vector2 touchPosition)
     {

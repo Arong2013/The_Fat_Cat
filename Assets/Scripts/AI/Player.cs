@@ -13,7 +13,6 @@ public class Player : IEntity,ICombatable, ITurnStateable
     {
         Radius = radius;
         transform = _transform;
-        IsObstacle = true;
         Position = _transform.position;
         CurrentTurnState = TurnState.FAILURE;
         animator = transform.GetComponent<Animator>();
@@ -22,7 +21,6 @@ public class Player : IEntity,ICombatable, ITurnStateable
     }
 
     public void SetTurnAction(ITurnAction _turnAction) { turnAction = _turnAction; }
-
     public TurnState ExecuteTurn()
     {
         if (turnAction == null)
@@ -33,9 +31,17 @@ public class Player : IEntity,ICombatable, ITurnStateable
             turnAction = null;
         return CurrentTurnState;
     }
-
     public void TakeDamage(ICombatable target)
     {
         throw new System.NotImplementedException();
+    }
+
+    public override bool ObstacleEvent(IEntity entity)
+    {
+        if(entity is Enemy enemy)
+        {
+            return true;
+        }
+        return true;
     }
 }

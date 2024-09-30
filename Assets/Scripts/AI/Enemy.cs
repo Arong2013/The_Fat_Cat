@@ -12,7 +12,6 @@ public class Enemy : IEntity, ITurnStateable, ICombatable
     {
         Radius = radius;
         transform = _transform;
-        IsObstacle = true;
         Position = _transform.position;
         animator = transform.GetComponent<Animator>();
         CurrentTurnState = TurnState.FAILURE;
@@ -33,5 +32,10 @@ public class Enemy : IEntity, ITurnStateable, ICombatable
     public void TakeDamage(ICombatable target)
     {
         throw new System.NotImplementedException();
+    }
+
+    public override bool ObstacleEvent(IEntity entity)
+    {
+        return false;
     }
 }

@@ -11,7 +11,6 @@ public class DropItem : IEntity, ITurnStateable
     {
         Radius = radius;
         transform = _transform;
-        IsObstacle = true;
         Position = _transform.position;
         CurrentTurnState = TurnState.FAILURE;
     }
@@ -24,5 +23,10 @@ public class DropItem : IEntity, ITurnStateable
         if (CurrentTurnState == TurnState.SUCCESS)
             turnAction = null;
         return CurrentTurnState;
+    }
+
+    public override bool ObstacleEvent(IEntity entity)
+    {
+        return false;
     }
 }
