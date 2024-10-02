@@ -31,8 +31,6 @@ public class TouchableMovementHandler : ITouchableAction
     {
         Vector2 touchPosition = eventData.position;
         Vector3 moveDirection = GetMoveDirection(touchPosition);
-        var entityPos = ientity.Position;
-        ientity.Position = ientity.Position + moveDirection;
         setTurnAction(new TargetMoveAction(ientity, ientity.Position + moveDirection));
         Debug.Log($"Moving in direction: {moveDirection}");
     }
@@ -41,7 +39,6 @@ public class TouchableMovementHandler : ITouchableAction
         float screenWidth = Screen.width;
         float screenHeight = Screen.height;
 
-        // 화면 상단 또는 하단을 터치했을 때
         if (touchPosition.y > screenHeight * 0.65f)  // 상단 25% 부분
         {
             return new Vector3(0, 0, 1);  // 위로 대각선 이동
@@ -60,8 +57,4 @@ public class TouchableMovementHandler : ITouchableAction
             return new Vector3(1, 0, 0);  // 오른쪽으로 이동
         }
     }
-
-
-
-
 }
