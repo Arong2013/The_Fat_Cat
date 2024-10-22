@@ -12,20 +12,16 @@ public abstract class MoveActionBase : ITurnAction
 {
     protected IEntity entity;
     protected Vector3 targetPosition;
-
     private Animator animator;
-
     public MoveActionBase(IEntity entity)
     {
         this.entity = entity;
         animator = entity.transform.GetComponent<Animator>(); // Animator 캐싱
     }
-
-    // 공통된 이동 로직
     protected TurnState MoveToTarget()
     {
         float distanceToTarget = Vector3.Distance(entity.transform.position, targetPosition);
-
+        
         if (distanceToTarget <= 0.1f)
         {
             entity.transform.position = targetPosition;
@@ -42,7 +38,6 @@ public abstract class MoveActionBase : ITurnAction
 
         return TurnState.RUNNING;
     }
-
     public abstract TurnState Execute();
 }
 
@@ -53,14 +48,13 @@ public class TargetMoveAction : MoveActionBase
     {
         this.targetPosition = targetPosition;
         var previousPosition = entity.Position;
-
+ 
         entity.Position = targetPosition;
         if (GameManager.Instance.entityManager.IsEntityColliding(entity))
         {
             entity.Position = previousPosition; // 충돌 시 원래 위치로 복원
         }
     }
-
     public override TurnState Execute()
     {
         return MoveToTarget(); // 공통 이동 로직 사용
